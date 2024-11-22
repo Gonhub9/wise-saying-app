@@ -1,24 +1,26 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
 
     // 인스턴스 변수
-    private Scanner scanner;
+    private final Scanner scanner;
     private int lastId;
-    private Saying[] sayings;
-    private int SayingsSize;
+    private final List<Saying> Sayings;
 
     public App() {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         lastId = 0;
-        Saying[] sayings = new Saying[3];
-        SayingsSize = 0;
+        Sayings = new ArrayList<>();
     }
 
     public void run() {
         System.out.println("== 명언 앱 ==");
+
+        makeSampleData();
 
         while (true) {
             System.out.print("명령 ) ");
@@ -35,10 +37,17 @@ public class App {
             } else if (cmd.equals("목록")) {
                 actionList();
 
+            } else if (cmd.startsWith("삭제")) { // 완벽하게 일치하지 않더라도 눈치껏 행동하겠다
+                String id = cmd.substring(6);
+                actionDelete(Integer.parseInt(id));
             }
 
-            scanner.close();
-        }
+        } scanner.close();
+    }
+
+    private void makeSampleData() {
+        addSaying("나의 죽음을 적들에게 알리지마라.", "이순신 장군");
+        addSaying("삶이 있는 한 희망은 있다.", "키케로");
     }
 
     private Saying addSaying(String content, String author) {
@@ -46,11 +55,14 @@ public class App {
 
         Saying Saying = new Saying(id, content, author);
 
-        sayings[SayingsSize] = Saying;
-        SayingsSize++;
+        Sayings.add(Saying);
+
+        System.out.println(("Saying = " + Sayings));
 
         return Saying;
     }
+
+    // 액션 함수들
 
     private void actionAdd() {
         System.out.print("명언 : ");
@@ -59,21 +71,24 @@ public class App {
         System.out.print("작가 : ");
         String author = scanner.nextLine();
 
-        Saying Saying = addSaying("나의 죽음을 적들에게 알리지 말라.", "이순신 장군");
+        Saying saying = addSaying(content, author);
 
-        System.out.println("%d번 명언이 등록되었습니다.".formatted(Saying.id));
+        System.out.println("%d번 명언이 등록되었습니다.".formatted(saying.getId()));
     }
 
     private void actionList() {
         System.out.println("번호 / 작가 / 명언");
         System.out.println("----------------------");
 
-        for (Saying Saying : sayings) {
-            if (Saying == null) break;
-            System.out.println("%d / %s / %s".formatted(Saying.id, Saying.content, Saying.author));
-
+        for (Saying saying : Sayings.reversed()) {
+            System.out.println("%d / %s / %s".formatted(saying.getId(), saying.getContent(), saying.getAuthor()));
         }
     }
 
+    private void actionDelete(int id) {
+        boolean removed = Sayings.removeIf(saying -> saying.getId() == id);
+
+        if (removed) System.out.println("%d번 명언이 삭제되었습니다.".formatted(id));
+    }
 
 }
