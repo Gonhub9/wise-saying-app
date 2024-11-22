@@ -2,15 +2,15 @@ package org.example;
 
 import java.util.Scanner;
 
-class App {
+public class App {
 
     // 인스턴스 변수
-    Scanner scanner;
-    int lastId;
-    Saying[] sayings;
-    int SayingsSize;
+    private Scanner scanner;
+    private int lastId;
+    private Saying[] sayings;
+    private int SayingsSize;
 
-    App() {
+    public App() {
         Scanner scanner = new Scanner(System.in);
         lastId = 0;
         Saying[] sayings = new Saying[3];
@@ -41,7 +41,7 @@ class App {
         }
     }
 
-    Saying addSaying(String content, String author) {
+    private Saying addSaying(String content, String author) {
         int id = ++lastId;
 
         Saying Saying = new Saying(id, content, author);
@@ -52,7 +52,7 @@ class App {
         return Saying;
     }
 
-    void actionAdd() {
+    private void actionAdd() {
         System.out.print("명언 : ");
         String content = scanner.nextLine();
 
@@ -64,7 +64,7 @@ class App {
         System.out.println("%d번 명언이 등록되었습니다.".formatted(Saying.id));
     }
 
-    void actionList() {
+    private void actionList() {
         System.out.println("번호 / 작가 / 명언");
         System.out.println("----------------------");
 
