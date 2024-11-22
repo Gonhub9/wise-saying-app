@@ -36,11 +36,11 @@ class App {
             // 종료
             if (cmd.equals("종료")) break;
 
-                // 등록
+            // 등록
             else if (cmd.equals("등록")) {
                 actionAdd();
 
-                // 목록
+            // 목록
             } else if (cmd.equals("목록")) {
                 actionList();
 
